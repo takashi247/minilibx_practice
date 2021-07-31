@@ -9,13 +9,13 @@ SRCS		:= main.c
 OBJS		:= $(SRCS:.c=.o)
 
 ifeq ($(shell uname),Linux)
-INCLUDE		:= -Imlx_linux
+INCLUDE		:= -Imlx
 
-LIBRARY		:= -Lmlx_linux -lmlx_linux -lXext -lX11 -lm -lz
+LIBRARY		:= -Lmlx -lmlx_linux -lXext -lX11 -lm -lz
 else
-INCLUDE		:= -Imlx_linux -I/usr/X11/include -I/usr/X11R6/include
+INCLUDE		:= -Imlx -I/usr/X11/include -I/usr/X11R6/include
 
-LIBRARY		:= -L/usr/X11R6/lib -Lmlx_linux -lmlx -lX11 -lXext -framework OpenGL -framework AppKit
+LIBRARY		:= -L/usr/X11R6/lib -Lmlx -lmlx -lX11 -lXext -framework OpenGL -framework AppKit
 endif
 
 RM			:= rm -f
