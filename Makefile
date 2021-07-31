@@ -8,19 +8,22 @@ SRCS		:= main.c
 
 OBJS		:= $(SRCS:.c=.o)
 
+MLXDIR		:= ./mlx/
+MLXGITPATH	:= https://github.com/42Paris/minilibx-linux.git
+
 ifeq ($(shell uname),Linux)
-INCLUDE		:= -Imlx
+INCLUDE		:= -I$(MLXDIR)
 
-LIBRARY		:= -Lmlx -lmlx_linux -lXext -lX11 -lm -lz
+LIBRARY		:= -L$(MLXDIR) -lmlx_linux -lXext -lX11 -lm -lz
 else
-INCLUDE		:= -Imlx -I/usr/X11/include -I/usr/X11R6/include
+INCLUDE		:= -I$(MLXDIR) -I/usr/X11/include -I/usr/X11R6/include
 
-LIBRARY		:= -L/usr/X11R6/lib -Lmlx -lmlx -lX11 -lXext -framework OpenGL -framework AppKit
+LIBRARY		:= -L/usr/X11R6/lib -L$(MLXDIR) -lmlx -lX11 -lXext -framework OpenGL -framework AppKit
 endif
 
 RM			:= rm -f
 
-all:		$(NAME)
+all:		mlx_clone $(NAME)
 
 $(NAME):	$(OBJS)
 	$(CC) $(CFLAGS) $(INCLUDE) $^ $(LIBRARY) -o $@
@@ -28,12 +31,21 @@ $(NAME):	$(OBJS)
 .c.o:
 	$(CC) $(CFLAGS) $(INCLUDE) -c $< -o $@
 
+mlx_clone:
+	if [ ! -d "$(MLXDIR)" ]; then \
+		git clone $(MLXGITPATH) $(MLXDIR); \
+		$(MAKE) -C mlx/; \
+	fi;
+
 clean:
 	$(RM) $(OBJS)
 
-fclean:		clean
+mlx_clean:
+	$(RM) -r $(MLXDIR)
+
+fclean:		clean mlx_clean
 	$(RM) $(NAME)
 
 re:			fclean all
 
-.PHONY:		all clean fclean re
+.PHONY:		all clean fclean re mlx_clone mlx_clean
