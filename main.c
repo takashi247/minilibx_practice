@@ -16,16 +16,16 @@ int
 	mlx_win = mlx_new_window(mlx, width, height, "Hellow world!");
 	if (!mlx_win)
 		return (1);
-	i= 0;
+	i = 0;
 	while (i < width)
 	{
-			j = 0;
-			while (j < height)
-			{
-					mlx_pixel_put(mlx, mlx_win, i, j, 127);
-					j++;
-			}
-			i++;
+		j = 0;
+		while (j < height)
+		{
+			mlx_pixel_put(mlx, mlx_win, i, j, 127);
+			j++;
+		}
+		i++;
 	}
 	mlx_loop(mlx);
 }
